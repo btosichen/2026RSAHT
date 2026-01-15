@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>導師遴聘／輪替制度比較平台（五校比較）</title>
+    <title>導師遴聘／輪替制度比較平台（六校比較）</title>
     <style>
         /* --- CSS Reset & Variables (Vivid/Lively Theme) --- */
         :root {
@@ -24,6 +24,7 @@
             --color-jingxing: #fdcb6e; /* 明亮黃 */
             --color-xingya: #a29bfe;   /* 薰衣草紫 */
             --color-heping: #00cec9;   /* 亮青色 (和平) */
+            --color-datong: #54a0ff;   /* 寶藍色 (大同) */
 
             /* 功能色 */
             --accent-color: #0984e3;
@@ -236,6 +237,7 @@
         .card.jingxing { border-top: 6px solid var(--color-jingxing); }
         .card.xingya { border-top: 6px solid var(--color-xingya); }
         .card.heping { border-top: 6px solid var(--color-heping); }
+        .card.datong { border-top: 6px solid var(--color-datong); }
 
         .card h3 { 
             margin-bottom: 1rem; 
@@ -250,6 +252,7 @@
         .card.jingxing h3 { color: #f39c12; }
         .card.xingya h3 { color: #6c5ce7; }
         .card.heping h3 { color: #00b5b5; }
+        .card.datong h3 { color: #2e86de; }
 
         .card-content { font-size: 1rem; color: #555; }
         
@@ -279,7 +282,7 @@
             background: white;
             border: 1px solid #eee;
         }
-        table { width: 100%; border-collapse: collapse; min-width: 800px; }
+        table { width: 100%; border-collapse: collapse; min-width: 900px; }
         
         th { 
             background-color: #f8f9fa; 
@@ -313,6 +316,7 @@
         .summary-card.jingxing-sum { background: linear-gradient(135deg, #fdcb6e 0%, #e17055 100%); }
         .summary-card.xingya-sum { background: linear-gradient(135deg, #a29bfe 0%, #6c5ce7 100%); }
         .summary-card.heping-sum { background: linear-gradient(135deg, #00cec9 0%, #0984e3 100%); }
+        .summary-card.datong-sum { background: linear-gradient(135deg, #54a0ff 0%, #2e86de 100%); }
         
         .summary-card h3 { color: white; margin-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.3); padding-bottom: 5px; }
         .summary-card .card-content { color: rgba(255,255,255,0.95); font-weight: 500; }
@@ -329,7 +333,7 @@
         <h1>
             <span>🏫</span> 
             導師遴聘制度比較
-            <span class="subtitle">五校分析</span>
+            <span class="subtitle">六校分析</span>
         </h1>
         <div class="search-box">
             <input type="text" id="searchInput" placeholder="搜尋：積分、免兼、獎勵...">
@@ -579,6 +583,33 @@
                         sub: "0.01/日 (上限0.75)",
                         negative: "無"
                     }
+                },
+                datong: {
+                    id: "datong",
+                    name: "大同高中(國)",
+                    classCount: "約 18 班",
+                    color: "#54a0ff", // Blue
+                    diff: {
+                        committee: "全體國中部教師 (全員制)",
+                        lookback: "到校任職起算 (總積分)",
+                        exemption: "連續任導師3年、行政卸任3年"
+                    },
+                    features: [
+                        { type: "info", text: "全員委員制", desc: "導師輪替委員會包含全體國中部正式教師。" },
+                        { type: "risk", text: "專任扣分", desc: "專任教師每學年 -2 分 (自98學年度實施)。" },
+                        { type: "bonus", text: "中途接任獎勵", desc: "中途接任導師第一學期額外 +0.5 分。" }
+                    ],
+                    summary: "採全員委員制，對專任教師設有扣分機制 (-2分) 以加速輪替，強調全校參與。",
+                    scores: {
+                        homeroom: 1,
+                        director: 2,
+                        chief: 1.5,
+                        admin: 0.5,
+                        subject: -2,
+                        special: "中途接任首學期+0.5",
+                        sub: "學務處協調/依積分",
+                        negative: "無"
+                    }
                 }
             }
         };
@@ -629,8 +660,8 @@
             const container = document.querySelector('.summary-grid');
             let html = '';
             
-            // Order: Xingya, Tianmu, Lanya, Jingxing, Heping
-            ['xingya', 'tianmu', 'lanya', 'jingxing', 'heping'].forEach(key => {
+            // Order: Xingya, Tianmu, Lanya, Jingxing, Heping, Datong
+            ['xingya', 'tianmu', 'lanya', 'jingxing', 'heping', 'datong'].forEach(key => {
                 const s = appData.schools[key];
                 html += `
                     <div class="summary-card ${key}-sum searchable-item" data-text="${s.name} 總結">
@@ -735,7 +766,7 @@
             }
 
             // Header
-            let thead = `<thead><tr><th style="width:16%">職務/項目</th>`;
+            let thead = `<thead><tr><th style="width:14%">職務/項目</th>`;
             schools.forEach(s => {
                 thead += `<th style="border-bottom: 3px solid ${s.color}; color:${s.color}">${s.name}</th>`;
             });
