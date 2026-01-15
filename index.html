@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>導師遴聘／輪替制度比較平台（天母/蘭雅/景興/興雅）2026.1.15</title>
+    <title>導師遴聘／輪替制度比較平台（五校比較）</title>
     <style>
         /* --- CSS Reset & Variables (Vivid/Lively Theme) --- */
         :root {
@@ -23,6 +23,7 @@
             --color-lanya: #00b894;    /* 薄荷綠 */
             --color-jingxing: #fdcb6e; /* 明亮黃 */
             --color-xingya: #a29bfe;   /* 薰衣草紫 */
+            --color-heping: #00cec9;   /* 亮青色 (和平) */
 
             /* 功能色 */
             --accent-color: #0984e3;
@@ -234,6 +235,7 @@
         .card.lanya { border-top: 6px solid var(--color-lanya); }
         .card.jingxing { border-top: 6px solid var(--color-jingxing); }
         .card.xingya { border-top: 6px solid var(--color-xingya); }
+        .card.heping { border-top: 6px solid var(--color-heping); }
 
         .card h3 { 
             margin-bottom: 1rem; 
@@ -245,8 +247,9 @@
         /* Specific header colors */
         .card.tianmu h3 { color: var(--color-tianmu); }
         .card.lanya h3 { color: var(--color-lanya); }
-        .card.jingxing h3 { color: #f39c12; /* Darker yellow for text */ }
-        .card.xingya h3 { color: #6c5ce7; /* Darker purple for text */ }
+        .card.jingxing h3 { color: #f39c12; }
+        .card.xingya h3 { color: #6c5ce7; }
+        .card.heping h3 { color: #00b5b5; }
 
         .card-content { font-size: 1rem; color: #555; }
         
@@ -265,6 +268,7 @@
         .badge.highlight { background: #fff3cd; color: #856404; }
         .badge.risk { background: #f8d7da; color: #721c24; }
         .badge.bonus { background: #d4edda; color: #155724; }
+        .badge.info { background: #e1f5fe; color: #0277bd; }
 
         /* --- Table Styling --- */
         .table-wrapper { 
@@ -275,7 +279,7 @@
             background: white;
             border: 1px solid #eee;
         }
-        table { width: 100%; border-collapse: collapse; min-width: 700px; }
+        table { width: 100%; border-collapse: collapse; min-width: 800px; }
         
         th { 
             background-color: #f8f9fa; 
@@ -308,15 +312,13 @@
         .summary-card.lanya-sum { background: linear-gradient(135deg, #00b894 0%, #00cec9 100%); }
         .summary-card.jingxing-sum { background: linear-gradient(135deg, #fdcb6e 0%, #e17055 100%); }
         .summary-card.xingya-sum { background: linear-gradient(135deg, #a29bfe 0%, #6c5ce7 100%); }
+        .summary-card.heping-sum { background: linear-gradient(135deg, #00cec9 0%, #0984e3 100%); }
         
         .summary-card h3 { color: white; margin-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.3); padding-bottom: 5px; }
         .summary-card .card-content { color: rgba(255,255,255,0.95); font-weight: 500; }
 
         /* --- Utilities --- */
         .hidden { display: none !important; }
-        
-        /* --- Edit Modal (Simplified for generic use if needed, but primarily now just logic) --- */
-        /* Removing edit modal UI as Xingya is now hardcoded as requested, keeping code clean */
 
     </style>
 </head>
@@ -327,7 +329,7 @@
         <h1>
             <span>🏫</span> 
             導師遴聘制度比較
-            <span class="subtitle">興雅 / 天母 / 蘭雅 / 景興</span>
+            <span class="subtitle">五校分析</span>
         </h1>
         <div class="search-box">
             <input type="text" id="searchInput" placeholder="搜尋：積分、免兼、獎勵...">
@@ -550,6 +552,33 @@
                         sub: "未特別註明",
                         negative: "無"
                     }
+                },
+                heping: {
+                    id: "heping",
+                    name: "和平高中(國)",
+                    classCount: "約 18 班",
+                    color: "#00cec9", // Teal
+                    diff: {
+                        committee: "16 人 (含領域代表)",
+                        lookback: "到校任職起算 (總積分)",
+                        exemption: "重大傷病、懷孕危險、屆齡退休"
+                    },
+                    features: [
+                        { type: "info", text: "領域配額制", desc: "依國/英/數/社/自/藝/健 七大領域比例遴選。" },
+                        { type: "bonus", text: "中途接任獎勵", desc: "中途接班，每次額外加 0.5 分。" },
+                        { type: "highlight", text: "代理日計分", desc: "代理導師滿1日(8H)計0.01分 (上限0.75)。" }
+                    ],
+                    summary: "採領域配額平衡師資，積分採計全校年資，強調久任與輪替的平衡。",
+                    scores: {
+                        homeroom: 1.5,
+                        director: 3,
+                        chief: 2,
+                        admin: "0.4", // mapped to club/team
+                        subject: 0,
+                        special: "中途接班+0.5/次",
+                        sub: "0.01/日 (上限0.75)",
+                        negative: "無"
+                    }
                 }
             }
         };
@@ -600,8 +629,8 @@
             const container = document.querySelector('.summary-grid');
             let html = '';
             
-            // Order: Xingya, Tianmu, Lanya, Jingxing
-            ['xingya', 'tianmu', 'lanya', 'jingxing'].forEach(key => {
+            // Order: Xingya, Tianmu, Lanya, Jingxing, Heping
+            ['xingya', 'tianmu', 'lanya', 'jingxing', 'heping'].forEach(key => {
                 const s = appData.schools[key];
                 html += `
                     <div class="summary-card ${key}-sum searchable-item" data-text="${s.name} 總結">
@@ -666,7 +695,7 @@
 
             Object.values(appData.schools).forEach(school => {
                 let featuresHtml = school.features.map(f => {
-                    const badgeClass = f.type === 'risk' ? 'risk' : (f.type === 'highlight' ? 'highlight' : (f.type === 'bonus' ? 'bonus' : ''));
+                    const badgeClass = f.type === 'risk' ? 'risk' : (f.type === 'highlight' ? 'highlight' : (f.type === 'bonus' ? 'bonus' : (f.type === 'info' ? 'info' : '')));
                     return `
                         <div style="margin-bottom: 12px; border-left: 3px solid #eee; padding-left: 10px; padding-bottom:2px;">
                             <span class="badge ${badgeClass}">${f.text}</span>
@@ -693,7 +722,7 @@
                 { id: 'homeroom', label: '導師 (每學年)' },
                 { id: 'director', label: '主任 (每學年)' },
                 { id: 'chief', label: '組長 (每學年)' },
-                { id: 'admin', label: '協助行政' },
+                { id: 'admin', label: '協助行政/社團' },
                 { id: 'subject', label: '專任教師 (每學年)' }
             ];
 
@@ -706,7 +735,7 @@
             }
 
             // Header
-            let thead = `<thead><tr><th style="width:18%">職務/項目</th>`;
+            let thead = `<thead><tr><th style="width:16%">職務/項目</th>`;
             schools.forEach(s => {
                 thead += `<th style="border-bottom: 3px solid ${s.color}; color:${s.color}">${s.name}</th>`;
             });
