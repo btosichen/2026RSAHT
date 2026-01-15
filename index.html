@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>導師遴聘／輪替制度比較平台（天母/蘭雅/景興/興雅）</title>
+    <title>導師遴聘／輪替制度比較平台（天母/蘭雅/景興/興雅）2026.1.15</title>
     <style>
         /* --- CSS Reset & Variables (Vivid/Lively Theme) --- */
         :root {
@@ -446,7 +446,7 @@
                 xingya: {
                     id: "xingya",
                     name: "興雅國中",
-                    classCount: "約 45 班",
+                    classCount: "普通班45班、特殊班5班、資賦優異班2班、學習資源班1班",
                     color: "#a29bfe", // Lavender
                     diff: {
                         committee: "21 人 (次多)",
@@ -473,7 +473,7 @@
                 tianmu: {
                     id: "tianmu",
                     name: "天母國中",
-                    classCount: "約 57 班",
+                    classCount: "普通班53班、資源班2班、學困班1班、資優班1班",
                     color: "#ff7675", // Red
                     diff: {
                         committee: "25 人 (最多)",
@@ -500,7 +500,7 @@
                 lanya: {
                     id: "lanya",
                     name: "蘭雅國中",
-                    classCount: "約 53 班",
+                    classCount: "普通班44班、特教班2班、學習資源班3班、資優班2班、學困班1班",
                     color: "#00b894", // Green
                     diff: {
                         committee: "13-14 人",
@@ -527,7 +527,7 @@
                 jingxing: {
                     id: "jingxing",
                     name: "景興國中",
-                    classCount: "約 46 班",
+                    classCount: "普通班42班、身障2班、資優1班、資源班1班",
                     color: "#fdcb6e", // Yellow
                     diff: {
                         committee: "13-14 人",
@@ -605,9 +605,11 @@
                 const s = appData.schools[key];
                 html += `
                     <div class="summary-card ${key}-sum searchable-item" data-text="${s.name} 總結">
-                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; border-bottom: 1px solid rgba(255,255,255,0.3); padding-bottom: 5px;">
-                            <h3 style="margin:0; border:none; color:white;">${s.name}</h3>
-                            <span style="font-size:0.85rem; background:rgba(0,0,0,0.2); padding:3px 10px; border-radius:12px; font-weight:bold;">規模：${s.classCount}</span>
+                        <div style="margin-bottom:12px; border-bottom: 1px solid rgba(255,255,255,0.3); padding-bottom: 10px;">
+                            <h3 style="margin:0 0 8px 0; border:none; color:white;">${s.name}</h3>
+                            <div style="font-size:0.85rem; background:rgba(0,0,0,0.15); padding:6px 10px; border-radius:8px; line-height:1.4;">
+                                <span style="opacity:0.8">規模：</span>${s.classCount}
+                            </div>
                         </div>
                         <p class="card-content" style="color:white;">${s.summary}</p>
                     </div>
