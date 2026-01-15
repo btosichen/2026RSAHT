@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>導師遴聘／輪替制度比較平台（天母/蘭雅/景興/興雅）</title>
+    <style>
+        /* --- CSS Reset & Variables (Vivid/Lively Theme) --- */
+        :root {
+            /* 主色調：活潑的藍綠色與暖橘色 */
+            --primary-gradient: linear-gradient(135deg, #00C6FB 0%, #005BEA 100%);
+            --header-text: #ffffff;
+            
+            --bg-color: #f0f4f8; /* 淺灰藍背景 */
+            --card-bg: #ffffff;
+            
+            --text-main: #2d3436;
+            --text-light: #636e72;
+            --border-color: #dfe6e9;
+
+            /* 學校代表色 (更鮮豔) */
+            --color-tianmu: #ff7675;   /* 柔和紅 */
+            --color-lanya: #00b894;    /* 薄荷綠 */
+            --color-jingxing: #fdcb6e; /* 明亮黃 */
+            --color-xingya: #a29bfe;   /* 薰衣草紫 */
+
+            /* 功能色 */
+            --accent-color: #0984e3;
+            --badge-bg: #e1f5fe;
+            --badge-text: #0277bd;
+            
+            /* 陰影優化 */
+            --shadow-sm: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+            --shadow-hover: 0 13px 27px -5px rgba(50, 50, 93, 0.25), 0 8px 16px -8px rgba(0, 0, 0, 0.3);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: "Noto Sans TC", "Microsoft JhengHei", sans-serif; }
+        
+        body { background-color: var(--bg-color); color: var(--text-main); line-height: 1.6; display: flex; flex-direction: column; min-height: 100vh; }
+
+        /* --- Header --- */
+        header {
+            background: var(--primary-gradient);
+            color: var(--header-text);
+            padding: 1.2rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        header h1 { 
+            font-size: 1.6rem; 
+            font-weight: 700; 
+            display: flex; 
+            align-items: center; 
+            gap: 12px; 
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+        
+        .subtitle { 
+            font-size: 0.9rem; 
+            background: rgba(255,255,255,0.2); 
+            padding: 4px 12px; 
+            border-radius: 20px; 
+            font-weight: normal; 
+            display: none; 
+            backdrop-filter: blur(5px);
+        }
+        @media(min-width: 768px) { .subtitle { display: inline-block; } }
+
+        .search-box input {
+            padding: 10px 20px;
+            border-radius: 25px;
+            border: 2px solid transparent;
+            width: 220px;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .search-box input:focus { 
+            width: 320px; 
+            outline: none; 
+            border-color: #fff; 
+            box-shadow: 0 0 0 3px rgba(255,255,255,0.3); 
+        }
+
+        /* --- Layout --- */
+        .container { display: flex; flex: 1; flex-direction: column; }
+        @media(min-width: 992px) { .container { flex-direction: row; } }
+
+        /* --- Sidebar --- */
+        .sidebar {
+            background: white;
+            padding: 2rem;
+            width: 100%;
+            border-bottom: 1px solid var(--border-color);
+        }
+        @media(min-width: 992px) {
+            .sidebar { 
+                width: 260px; 
+                border-right: 1px solid var(--border-color); 
+                border-bottom: none; 
+                position: sticky; 
+                top: 75px; 
+                height: calc(100vh - 75px); 
+                overflow-y: auto; 
+            }
+        }
+
+        .filter-title { 
+            font-weight: 800; 
+            margin-bottom: 0.8rem; 
+            color: #2d3436; 
+            display: block; 
+            font-size: 1rem;
+            letter-spacing: 0.5px;
+        }
+        
+        .filter-label { 
+            display: flex; 
+            align-items: center; 
+            margin-bottom: 0.8rem; 
+            cursor: pointer; 
+            padding: 8px 12px;
+            border-radius: 8px;
+            transition: background 0.2s;
+        }
+        .filter-label:hover { background: #f1f2f6; }
+        .filter-label input { margin-right: 12px; accent-color: var(--accent-color); transform: scale(1.2); }
+        
+        .btn-group { display: flex; flex-direction: column; gap: 12px; margin-top: 1.5rem; }
+        .btn {
+            padding: 10px 18px;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: 600;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .btn-primary { 
+            background: var(--primary-gradient); 
+            color: white; 
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 12px rgba(0,0,0,0.15); }
+        .btn-outline { 
+            background: white; 
+            border: 2px solid #dfe6e9; 
+            color: #636e72; 
+        }
+        .btn-outline:hover { 
+            border-color: var(--accent-color); 
+            color: var(--accent-color); 
+            background: #fdfdfd;
+        }
+        
+        /* --- Main Content --- */
+        .main-content { flex: 1; padding: 2.5rem; overflow-x: hidden; }
+        
+        /* --- Controls --- */
+        .view-controls { 
+            display: flex; 
+            justify-content: space-between; 
+            margin-bottom: 2rem; 
+            align-items: center; 
+            background: white;
+            padding: 1rem 1.5rem;
+            border-radius: 15px;
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .toggle-switch { display: flex; background: #f1f2f6; border-radius: 25px; padding: 4px; }
+        .toggle-btn {
+            padding: 8px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            border: none;
+            background: transparent;
+            color: #636e72;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        .toggle-btn.active { 
+            background: white; 
+            color: var(--accent-color); 
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1); 
+        }
+
+        /* --- Sections --- */
+        .section-header {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #2d3436;
+            margin-bottom: 1.5rem;
+            padding-left: 15px;
+            border-left: 5px solid var(--accent-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        /* --- Cards --- */
+        .grid-4 { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
+            gap: 1.8rem; 
+            margin-bottom: 3rem; 
+        }
+        
+        .card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            box-shadow: var(--shadow-sm);
+            padding: 1.8rem;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            border: 1px solid #f0f0f0;
+            position: relative;
+            overflow: hidden;
+        }
+        .card:hover { transform: translateY(-5px); box-shadow: var(--shadow-hover); }
+        
+        /* Colorful top borders */
+        .card.tianmu { border-top: 6px solid var(--color-tianmu); }
+        .card.lanya { border-top: 6px solid var(--color-lanya); }
+        .card.jingxing { border-top: 6px solid var(--color-jingxing); }
+        .card.xingya { border-top: 6px solid var(--color-xingya); }
+
+        .card h3 { 
+            margin-bottom: 1rem; 
+            font-size: 1.25rem; 
+            display: flex; 
+            justify-content: space-between;
+            align-items: center;
+        }
+        /* Specific header colors */
+        .card.tianmu h3 { color: var(--color-tianmu); }
+        .card.lanya h3 { color: var(--color-lanya); }
+        .card.jingxing h3 { color: #f39c12; /* Darker yellow for text */ }
+        .card.xingya h3 { color: #6c5ce7; /* Darker purple for text */ }
+
+        .card-content { font-size: 1rem; color: #555; }
+        
+        /* --- Badges --- */
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            background: #f1f2f6;
+            color: #636e72;
+            margin-bottom: 6px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        }
+        .badge.highlight { background: #fff3cd; color: #856404; }
+        .badge.risk { background: #f8d7da; color: #721c24; }
+        .badge.bonus { background: #d4edda; color: #155724; }
+
+        /* --- Table Styling --- */
+        .table-wrapper { 
+            overflow-x: auto; 
+            margin-bottom: 3rem; 
+            border-radius: 16px; 
+            box-shadow: var(--shadow-sm); 
+            background: white;
+            border: 1px solid #eee;
+        }
+        table { width: 100%; border-collapse: collapse; min-width: 700px; }
+        
+        th { 
+            background-color: #f8f9fa; 
+            color: #2d3436; 
+            padding: 16px;
+            font-weight: 700;
+            text-align: left;
+            border-bottom: 2px solid #eee;
+        }
+        td { 
+            padding: 14px 16px; 
+            border-bottom: 1px solid #f1f2f6; 
+            color: #555;
+            vertical-align: top;
+        }
+        tr:last-child td { border-bottom: none; }
+        tr:hover { background-color: #fcfcfc; }
+        
+        .score-val { font-weight: bold; font-size: 1.1rem; }
+        
+        /* --- Summary Cards (Colorful) --- */
+        .summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem; margin-bottom: 3rem; }
+        .summary-card { 
+            border-radius: 16px; 
+            padding: 1.5rem; 
+            color: white; 
+            box-shadow: var(--shadow-sm);
+        }
+        .summary-card.tianmu-sum { background: linear-gradient(135deg, #ff7675 0%, #d63031 100%); }
+        .summary-card.lanya-sum { background: linear-gradient(135deg, #00b894 0%, #00cec9 100%); }
+        .summary-card.jingxing-sum { background: linear-gradient(135deg, #fdcb6e 0%, #e17055 100%); }
+        .summary-card.xingya-sum { background: linear-gradient(135deg, #a29bfe 0%, #6c5ce7 100%); }
+        
+        .summary-card h3 { color: white; margin-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.3); padding-bottom: 5px; }
+        .summary-card .card-content { color: rgba(255,255,255,0.95); font-weight: 500; }
+
+        /* --- Utilities --- */
+        .hidden { display: none !important; }
+        
+        /* --- Edit Modal (Simplified for generic use if needed, but primarily now just logic) --- */
+        /* Removing edit modal UI as Xingya is now hardcoded as requested, keeping code clean */
+
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <h1>
+            <span>🏫</span> 
+            導師遴聘制度比較
+            <span class="subtitle">興雅 / 天母 / 蘭雅 / 景興</span>
+        </h1>
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="搜尋：積分、免兼、獎勵...">
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="filter-group">
+                <span class="filter-title">顯示內容</span>
+                <label class="filter-label"><input type="checkbox" checked value="common" class="section-filter"> ⚖️ 共同法源與原則</label>
+                <label class="filter-label"><input type="checkbox" checked value="diff" class="section-filter"> ⚡ 關鍵差異比較</label>
+                <label class="filter-label"><input type="checkbox" checked value="features" class="section-filter"> 🌟 各校特色條款</label>
+                <label class="filter-label"><input type="checkbox" checked value="score" class="section-filter"> 🔢 積分計算表</label>
+                <label class="filter-label"><input type="checkbox" checked value="summary" class="section-filter"> 💡 總結分析</label>
+            </div>
+            
+            <div class="filter-group">
+                <span class="filter-title">資料操作</span>
+                <div class="btn-group">
+                    <button class="btn btn-outline" onclick="exportCSV()">📊 匯出積分 CSV</button>
+                    <button class="btn btn-outline" onclick="exportJSON()">💾 下載 JSON</button>
+                </div>
+            </div>
+
+            <div style="margin-top: auto; padding-top: 2rem; font-size: 0.8rem; color: #b2bec3;">
+                <p>資料更新：2026/01/15</p>
+                <p>來源：各校遴聘辦法</p>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content" id="mainDisplay">
+            
+            <!-- Controls -->
+            <div class="view-controls">
+                <h2 style="font-size: 1.2rem; color: #2d3436; margin:0;">📊 比較儀表板</h2>
+                <div class="toggle-switch">
+                    <button class="toggle-btn active" onclick="setMode('compare')">快速比較</button>
+                    <button class="toggle-btn" onclick="setMode('school')">逐校檢視</button>
+                </div>
+            </div>
+
+            <!-- 1. Summary Section (Highlights) -->
+            <section id="section-summary">
+                <div class="section-header">
+                    <span>💡 制度分析總結</span>
+                </div>
+                <div class="summary-grid">
+                    <!-- Injected by JS -->
+                </div>
+            </section>
+
+            <!-- 2. Common Section -->
+            <section id="section-common">
+                <div class="section-header">
+                    <span>⚖️ 共同規範 (全校適用)</span>
+                </div>
+                <div class="card" style="margin-bottom: 2rem; border-top: 4px solid #74b9ff;">
+                    <div class="card-content" id="common-content">
+                        <!-- Injected by JS -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- 3. Differences Section -->
+            <section id="section-diff">
+                <div class="section-header">
+                    <span>⚡ 關鍵差異</span>
+                </div>
+                <div class="grid-4" id="diff-grid">
+                    <!-- Injected by JS -->
+                </div>
+            </section>
+
+            <!-- 4. Unique Features Section -->
+            <section id="section-features">
+                <div class="section-header">
+                    <span>🌟 特色與風險提示</span>
+                </div>
+                <div class="grid-4" id="features-grid">
+                    <!-- Injected by JS -->
+                </div>
+            </section>
+
+            <!-- 5. Score Table Section -->
+            <section id="section-score">
+                <div class="section-header">
+                    <span>🔢 積分計算對照表</span>
+                    <div>
+                        <button class="btn btn-outline" style="font-size:0.8rem; padding: 4px 12px; border-radius:15px;" onclick="toggleScoreDetail()">切換：摘要/詳細</button>
+                    </div>
+                </div>
+                <div class="table-wrapper">
+                    <table id="scoreTable">
+                        <!-- Injected by JS -->
+                    </table>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // --- DATA MODEL (Updated with Xingya and corrected details) ---
+        const initialData = {
+            common: [
+                "<strong>法源依據：</strong>均依據《教師法》第32條或第17條，強調教師擔任導師之義務。",
+                "<strong>遴聘順位：</strong>普遍採「自願者優先」，名額不足時依積分（低者優先）或抽籤決定。",
+                "<strong>任期制度：</strong>原則上三年一任，以接班至該班畢業為原則，維護經營連續性。",
+                "<strong>組織申覆：</strong>皆設有「遴聘/輪替委員會」（含行政、教師、家長代表），並提供書面申覆機制。"
+            ],
+            schools: {
+                xingya: {
+                    id: "xingya",
+                    name: "興雅國中",
+                    color: "#a29bfe", // Lavender
+                    diff: {
+                        committee: "21 人 (次多)",
+                        lookback: "依辦法規定",
+                        exemption: "年滿 58 歲或已申請退休者"
+                    },
+                    features: [
+                        { type: "badge", text: "詳盡代理計分", desc: "代理導師每 15 日 +0.1 分，計算極為精細。" },
+                        { type: "badge", text: "比賽指導獎勵", desc: "短期對外比賽指導累積 50 日 +0.5 分。" },
+                        { type: "risk", text: "專任負向扣分", desc: "專任教師每學年 -3 分 (每學期 -1.5)，加速輪替。" }
+                    ],
+                    summary: "計分精細，對代理與指導給予明確量化獎勵；針對專任教師設有扣分機制。",
+                    scores: {
+                        homeroom: 1,
+                        director: 2,
+                        chief: 1.5,
+                        admin: 1,
+                        subject: -3, 
+                        special: "接任畢業班+1",
+                        sub: "每15日 +0.1",
+                        negative: "無"
+                    }
+                },
+                tianmu: {
+                    id: "tianmu",
+                    name: "天母國中",
+                    color: "#ff7675", // Red
+                    diff: {
+                        committee: "25 人 (最多)",
+                        lookback: "依辦法規定",
+                        exemption: "前一年度長假者，回歸優先擔任"
+                    },
+                    features: [
+                        { type: "badge", text: "副導師制", desc: "設副導師制，明確代理順位與責任。" },
+                        { type: "risk", text: "負向扣分", desc: "在職進修、請長假每學期 -0.5 分。" },
+                        { type: "highlight", text: "中途接班獎勵", desc: "中途接 8、9 年級每學期 +0.5 分。" }
+                    ],
+                    summary: "傾向微觀管理，強調公平性，透過「未服務即扣分」機制維持運作。",
+                    scores: {
+                        homeroom: 1,
+                        director: 2,
+                        chief: 1.5,
+                        admin: 1,
+                        subject: 0,
+                        special: "接8/9年級 +0.5/學期",
+                        sub: "滿120日計0.5",
+                        negative: "進修/長假 -0.5"
+                    }
+                },
+                lanya: {
+                    id: "lanya",
+                    name: "蘭雅國中",
+                    color: "#00b894", // Green
+                    diff: {
+                        committee: "13-14 人",
+                        lookback: "最近 10 年",
+                        exemption: "懷孕女性教師優先免兼"
+                    },
+                    features: [
+                        { type: "bonus", text: "續任高額獎勵", desc: "任滿三年續任+1，六年續任+2，鼓勵久任。" },
+                        { type: "badge", text: "特殊職務採計", desc: "合作社理事主席、資優班導師納入計分。" },
+                        { type: "highlight", text: "高積分誘因", desc: "主任3分、組長2.5分，分值全校最高。" }
+                    ],
+                    summary: "分值最為慷慨，透過高積分與階梯式獎勵吸引並穩定導師人力。",
+                    scores: {
+                        homeroom: 2,
+                        director: 3,
+                        chief: 2.5,
+                        admin: 1,
+                        subject: 0,
+                        special: "續任一屆+1/二屆+2",
+                        sub: "滿月按比例(1/12)",
+                        negative: "無"
+                    }
+                },
+                jingxing: {
+                    id: "jingxing",
+                    name: "景興國中",
+                    color: "#fdcb6e", // Yellow
+                    diff: {
+                        committee: "13-14 人",
+                        lookback: "最近 6 年",
+                        exemption: "除不可抗力，不得無故中途辭任"
+                    },
+                    features: [
+                        { type: "risk", text: "員額連動", desc: "連續緩任兩次，減班時優先列不續聘參考。" },
+                        { type: "badge", text: "行政契約", desc: "強勢管理，強調依約履行義務。" },
+                        { type: "badge", text: "齊一化計分", desc: "導師、主任、組長積分皆為 1 分。" }
+                    ],
+                    summary: "採齊一化計分策略，管理重心在於嚴格的緩任限制與員額連動。",
+                    scores: {
+                        homeroom: 1,
+                        director: 1,
+                        chief: 1,
+                        admin: 1,
+                        subject: 0,
+                        special: "連續擔任六年 +1",
+                        sub: "未特別註明",
+                        negative: "無"
+                    }
+                }
+            }
+        };
+
+        // 狀態管理
+        let appData = JSON.parse(JSON.stringify(initialData));
+        let showScoreDetail = false;
+        let currentMode = 'compare';
+
+        // --- DOM ELEMENTS ---
+        const mainDisplay = document.getElementById('mainDisplay');
+        const searchInput = document.getElementById('searchInput');
+        const sectionFilters = document.querySelectorAll('.section-filter');
+
+        // --- INITIALIZATION ---
+        window.addEventListener('DOMContentLoaded', () => {
+            renderAll();
+            setupEventListeners();
+        });
+
+        function setupEventListeners() {
+            searchInput.addEventListener('input', (e) => {
+                filterContent(e.target.value.toLowerCase());
+            });
+
+            sectionFilters.forEach(cb => {
+                cb.addEventListener('change', () => {
+                    const sectionId = 'section-' + cb.value;
+                    const el = document.getElementById(sectionId);
+                    if(el) {
+                        if(cb.checked) el.classList.remove('hidden');
+                        else el.classList.add('hidden');
+                    }
+                });
+            });
+        }
+
+        // --- RENDER FUNCTIONS ---
+        function renderAll() {
+            renderSummary();
+            renderCommon();
+            renderDiff();
+            renderFeatures();
+            renderScoreTable();
+        }
+
+        function renderSummary() {
+            const container = document.querySelector('.summary-grid');
+            let html = '';
+            
+            // Order: Xingya, Tianmu, Lanya, Jingxing
+            ['xingya', 'tianmu', 'lanya', 'jingxing'].forEach(key => {
+                const s = appData.schools[key];
+                html += `
+                    <div class="summary-card ${key}-sum searchable-item" data-text="${s.name} 總結">
+                        <h3>${s.name}</h3>
+                        <p class="card-content" style="color:white;">${s.summary}</p>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+        }
+
+        function renderCommon() {
+            const container = document.getElementById('common-content');
+            const list = appData.common.map(item => `
+                <li style="margin-bottom:10px; display:flex; align-items:start;">
+                    <span style="color:var(--accent-color); margin-right:10px;">✔</span>
+                    <span>${item}</span>
+                </li>`
+            ).join('');
+            container.innerHTML = `<ul style="list-style:none;">${list}</ul>`;
+        }
+
+        function renderDiff() {
+            const container = document.getElementById('diff-grid');
+            let html = '';
+
+            const fields = [
+                { key: 'committee', label: '委員會人數' },
+                { key: 'lookback', label: '積分採計年限' },
+                { key: 'exemption', label: '免兼/緩任門檻' }
+            ];
+
+            Object.values(appData.schools).forEach(school => {
+                let content = '';
+                fields.forEach(f => {
+                    content += `
+                        <div style="margin-bottom:12px;">
+                            <strong style="font-size:0.85rem; color:#b2bec3; text-transform:uppercase; letter-spacing:1px;">${f.label}</strong>
+                            <div style="color:var(--text-main); font-weight:600; font-size:1.05rem;">${school.diff[f.key] || '---'}</div>
+                        </div>
+                    `;
+                });
+
+                html += `
+                    <div class="card ${school.id} searchable-item" data-text="${school.name} ${JSON.stringify(school.diff)}">
+                        <h3>${school.name}</h3>
+                        <div class="card-content">${content}</div>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+        }
+
+        function renderFeatures() {
+            const container = document.getElementById('features-grid');
+            let html = '';
+
+            Object.values(appData.schools).forEach(school => {
+                let featuresHtml = school.features.map(f => {
+                    const badgeClass = f.type === 'risk' ? 'risk' : (f.type === 'highlight' ? 'highlight' : (f.type === 'bonus' ? 'bonus' : ''));
+                    return `
+                        <div style="margin-bottom: 12px; border-left: 3px solid #eee; padding-left: 10px; padding-bottom:2px;">
+                            <span class="badge ${badgeClass}">${f.text}</span>
+                            <div style="font-size:0.95rem; margin-top:4px;">${f.desc}</div>
+                        </div>
+                    `;
+                }).join('');
+
+                html += `
+                    <div class="card ${school.id} searchable-item" data-text="${school.name} features">
+                        <h3>${school.name}</h3>
+                        <div class="card-content">${featuresHtml}</div>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+        }
+
+        function renderScoreTable() {
+            const table = document.getElementById('scoreTable');
+            const schools = Object.values(appData.schools);
+            
+            let rows = [
+                { id: 'homeroom', label: '導師 (每學年)' },
+                { id: 'director', label: '主任 (每學年)' },
+                { id: 'chief', label: '組長 (每學年)' },
+                { id: 'admin', label: '協助行政' },
+                { id: 'subject', label: '專任教師 (每學年)' }
+            ];
+
+            if (showScoreDetail) {
+                rows.push(
+                    { id: 'special', label: '特殊加分' },
+                    { id: 'sub', label: '代理導師' },
+                    { id: 'negative', label: '負向/扣分' }
+                );
+            }
+
+            // Header
+            let thead = `<thead><tr><th style="width:18%">職務/項目</th>`;
+            schools.forEach(s => {
+                thead += `<th style="border-bottom: 3px solid ${s.color}; color:${s.color}">${s.name}</th>`;
+            });
+            thead += `</tr></thead>`;
+
+            // Body
+            let tbody = `<tbody>`;
+            rows.forEach(r => {
+                tbody += `<tr><td><strong>${r.label}</strong></td>`;
+                schools.forEach(s => {
+                    let val = s.scores[r.id];
+                    let displayVal = val;
+                    let style = "";
+
+                    // Highlight logic
+                    if (typeof val === 'number') {
+                        displayVal = `<span class="score-val">${val}</span> 分`;
+                        if (val >= 3) style = "color: #00b894;"; // High score green
+                        if (val < 0) style = "color: #d63031;"; // Negative score red
+                    }
+                    if (val === 0) displayVal = `<span style="color:#b2bec3">0</span>`;
+                    
+                    // Specific overrides for clarity
+                    if (r.id === 'subject' && s.id === 'xingya') displayVal = `<span class="score-val" style="color:#d63031">-3</span> 分 <br><span style="font-size:0.8rem">(每學期-1.5)</span>`;
+
+                    tbody += `<td style="${style}">${displayVal}</td>`;
+                });
+                tbody += `</tr>`;
+            });
+            tbody += `</tbody>`;
+
+            table.innerHTML = thead + tbody;
+        }
+
+        // --- INTERACTION LOGIC ---
+
+        function setMode(mode) {
+            currentMode = mode;
+            document.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            const gridCols = mode === 'compare' ? 'repeat(auto-fit, minmax(280px, 1fr))' : '1fr';
+            document.querySelectorAll('.grid-4').forEach(grid => {
+                grid.style.gridTemplateColumns = gridCols;
+            });
+        }
+
+        function toggleScoreDetail() {
+            showScoreDetail = !showScoreDetail;
+            renderScoreTable();
+        }
+
+        function filterContent(term) {
+            const items = document.querySelectorAll('.searchable-item');
+            items.forEach(item => {
+                const text = item.getAttribute('data-text').toLowerCase();
+                if(term === '' || text.includes(term)) {
+                    item.classList.remove('hidden');
+                } else {
+                    item.classList.add('hidden');
+                }
+            });
+            
+            // Filter Table Rows
+            const rows = document.querySelectorAll('#scoreTable tbody tr');
+            if(term) {
+                rows.forEach(r => {
+                    if(r.textContent.toLowerCase().includes(term)) r.style.display = '';
+                    else r.style.display = 'none';
+                });
+            } else {
+                rows.forEach(r => r.style.display = '');
+            }
+        }
+
+        // --- EXPORT LOGIC ---
+        function exportJSON() {
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(appData, null, 2));
+            const downloadAnchorNode = document.createElement('a');
+            downloadAnchorNode.setAttribute("href", dataStr);
+            downloadAnchorNode.setAttribute("download", "school_comparison_2026.json");
+            document.body.appendChild(downloadAnchorNode);
+            downloadAnchorNode.click();
+            downloadAnchorNode.remove();
+        }
+
+        function exportCSV() {
+            const schools = Object.values(appData.schools);
+            let csvContent = "data:text/csv;charset=utf-8,\uFEFF"; 
+            
+            csvContent += "職務/項目," + schools.map(s => s.name).join(",") + "\n";
+            
+            const keys = ['homeroom', 'director', 'chief', 'admin', 'subject'];
+            const labels = ['導師', '主任', '組長', '協行', '專任'];
+            
+            keys.forEach((k, i) => {
+                let row = labels[i];
+                schools.forEach(s => {
+                    row += "," + (s.scores[k]);
+                });
+                csvContent += row + "\n";
+            });
+
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", "score_comparison_2026.csv");
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+        }
+    </script>
+</body>
+</html>
